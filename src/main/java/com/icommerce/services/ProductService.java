@@ -9,7 +9,6 @@ import com.icommerce.repository.ProductCriteria;
  *
  * @author kaiser
  */
-@Service
 public interface ProductService {
     List<Product> getAllProducts();
 
@@ -19,11 +18,7 @@ public interface ProductService {
 
     void deleteProduct(Integer productId);
 
-    Product getProductByName(String productName);
-
-    Product getProductByBrand(String productBrand);
-
     List<Product> sortProductByPrice(List<Product> products, boolean increase);
 
-    List<Product> filterProduct(ProductCriteria productCriteria);
+    List<Product> searchProduct(ProductCriteria productCriteria);
 }

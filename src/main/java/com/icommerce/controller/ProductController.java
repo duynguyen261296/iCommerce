@@ -30,18 +30,6 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
-    @GetMapping("/products/")
-    @ResponseBody
-    public Product getProductByName(@RequestParam String name) {
-        return productService.getProductByName(name);
-    }
-
-    @GetMapping("/products")
-    @ResponseBody
-    public Product getProductByBrand(@RequestParam String brand) {
-        return productService.getProductByBrand(brand);
-    }
-
     @GetMapping("/products/sort")
     @ResponseBody
     public List<Product> sortProductByPrice(@RequestParam boolean increase) {
@@ -49,10 +37,16 @@ public class ProductController {
         return productService.sortProductByPrice(allProducts, increase);
     }
 
-    @GetMapping("/products/filter")
+    @GetMapping("/products/search")
     @ResponseBody
-    public List<Product> filterProductByCriteria(@RequestBody ProductCriteria criteria) {
-        return productService.filterProduct(criteria);
+    public List<Product> filterProductByCriteria(@RequestParam(required = false) String name,
+                                                 @RequestParam(required = false) String brand,
+                                                 @RequestParam(required = false) Double minPrice,
+                                                 @RequestParam(required = false) Double maxPrice) {
+        ProductCriteria productCriteria = ProductCriteria.builder()
+                .name(name).brand(brand)
+                .minPrice(minPrice).maxPrice(maxPrice).build();
+        return productService.searchProduct(productCriteria);
     }
 
     @PostMapping("/products")

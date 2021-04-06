@@ -1,6 +1,8 @@
 package com.icommerce.model;
 
 import static javax.persistence.GenerationType.IDENTITY;
+
+import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -19,7 +21,7 @@ import lombok.Setter;
  * @author kaiser
  */
 @Entity
-@Table(name = "user_roles", uniqueConstraints = @UniqueConstraint(columnNames = { "role", "username" }))
+@Table(name = "user_roles")
 @Getter
 @Setter
 public class UserRole {

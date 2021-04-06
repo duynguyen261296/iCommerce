@@ -1,10 +1,14 @@
 package com.icommerce.model;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -21,6 +25,10 @@ import lombok.Setter;
 @Setter
 public class User {
     @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "user_id", unique = true, nullable = false)
+    private Integer userId;
+
     @Column(name = "username", unique = true, nullable = false, length = 45)
     private String username;
 
@@ -30,22 +38,27 @@ public class User {
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
+    @Column(name = "email", nullable = false, length = 60)
+    private String email;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private Set<UserRole> userRole = new HashSet<>();
 
     public User() {
     }
 
-    public User(String username, String password, boolean enabled) {
+    public User(String username, String password, String email, boolean enabled) {
         this.username = username;
         this.password = password;
         this.enabled = enabled;
+        this.email = email;
     }
 
-    public User(String username, String password, boolean enabled, Set<UserRole> userRole) {
+    public User(String username, String password, boolean enabled, String email, Set<UserRole> userRole) {
         this.username = username;
         this.password = password;
         this.enabled = enabled;
+        this.email = email;
         this.userRole = userRole;
     }
 }
