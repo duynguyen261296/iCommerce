@@ -25,11 +25,8 @@ public class Order {
     @Column(name = "order_id", unique = true, nullable = false)
     private Integer orderId;
 
-    @Column(name = "product_id", nullable = false)
-    private Integer productId;
-
     @Column(name = "full_name", nullable = false, length = 45)
-    private String fullname;
+    private String fullName;
 
     @Column(name = "phone", nullable = false, length = 12)
     private String phone;
@@ -40,11 +37,20 @@ public class Order {
     @Column(name = "email", nullable = false, length = 45)
     private String email;
 
+    @Column(name = "product_name", nullable = false)
+    private Integer productName;
+
+    @Column(name = "quantity", nullable = false)
+    private Integer quantity;
+
+    @Column(name = "sum", nullable = false)
+    private Double sumMoney;
+
     public Order() {
     }
 
-    public Order(String fullname, String phone, String address, String email) {
-        this.fullname = fullname;
+    public Order(String fullName, String phone, String address, String email) {
+        this.fullName = fullName;
         this.phone = phone;
         this.address = address;
         this.email = email;

@@ -32,7 +32,7 @@ public class ProductController {
 
     @GetMapping("/products/sort")
     @ResponseBody
-    public List<Product> sortProductByPrice(@RequestParam boolean increase) {
+    public List<Product> sortProductByPrice(@RequestParam(required = false) boolean increase) {
         List<Product> allProducts = productService.getAllProducts();
         return productService.sortProductByPrice(allProducts, increase);
     }
@@ -49,18 +49,18 @@ public class ProductController {
         return productService.searchProduct(productCriteria);
     }
 
-    @PostMapping("/products")
+    @PostMapping("/products/add")
     @ResponseBody
     public Product addProduct(@RequestBody Product product) {
         return productService.addNewProduct(product);
     }
 
-    @PutMapping(value = "/products")
+    @PutMapping(value = "/products/update")
     public Product updateProduct(@RequestBody Product product) {
         return productService.updateProduct(product);
     }
 
-    @DeleteMapping(value = "/products")
+    @DeleteMapping(value = "/products/delete")
     public void deleteProduct(@RequestParam Integer id) {
         productService.deleteProduct(id);
     }
