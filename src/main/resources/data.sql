@@ -9,7 +9,7 @@ CREATE TABLE users
     enabled  bit         not null,
 
     constraint PK_USERS primary key (user_id),
-    constraint UNIQUE_USERS unique (user_id, username, email)
+    constraint UNIQUE_USERS unique (username)
 );
 
 -- create table roles
@@ -17,8 +17,8 @@ DROP TABLE IF EXISTS roles;
 CREATE TABLE roles
 (
     role_id int identity,
-    role    varchar(5) not null
-        constraint CKC_ROLE check (role in ('USER', 'ADMIN')),
+    role    varchar(10) not null
+        constraint CKC_ROLE check (role in ('ROLE_USER', 'ROLE_ADMIN')),
 
     constraint PK_ROLES primary key (role_id)
 );
@@ -29,11 +29,11 @@ CREATE TABLE user_roles
 (
     user_role_id int identity,
     username     varchar(45) not null,
-    role         varchar(5)  not null
-        constraint CKC_ROLE check (role in ('USER', 'ADMIN')),
+    role         varchar(10)  not null
+        constraint CKC_ROLE check (role in ('ROLE_USER', 'ROLE_ADMIN')),
 
     constraint PK_USER_ROLES primary key (user_role_id),
-    constraint UNIQUE_USERS unique (username, role),
+    constraint UNIQUE_USERS_ROLES unique (username, role),
     constraint FK_USER_ROLES_USER foreign key (username) references users(username),
     constraint FK_USER_ROLES_ROLES foreign key (role) references roles(role)
 );
@@ -75,14 +75,14 @@ VALUES ('user_1', 'password1', 'user_1@gmail.com', 1),
 
 -- insert data for table roles
 INSERT INTO roles (role)
-VALUES ('USER'),
-       ('ADMIN');
+VALUES ('ROLE_USER'),
+       ('ROLE_ADMIN');
 
 -- insert data for table user_roles
 INSERT INTO user_roles (username, role)
-VALUES ('user_1', 'USER'),
-       ('user_2', 'USER'),
-       ('admin_1', 'ADMIN');
+VALUES ('user_1', 'ROLE_USER'),
+       ('user_2', 'ROLE_USER'),
+       ('admin_1', 'ROLE_ADMIN');
 
 -- insert data for table products
 INSERT INTO products (name, price, brand, quantity)

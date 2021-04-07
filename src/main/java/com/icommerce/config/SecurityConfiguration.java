@@ -6,7 +6,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl;
@@ -24,31 +23,27 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        return bCryptPasswordEncoder;
+    public PasswordEncoder passwordEncoder() {
+        return NoOpPasswordEncoder.getInstance();
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
-        http.authorizeRequests().antMatchers("/", "/login", "/logout").permitAll();
-
-        http.authorizeRequests()
+        http.csrf().disable()
+                .httpBasic()
+                .and()
+                .authorizeRequests()
+                .antMatchers("/", "/login", "/logout").permitAll()
                 .antMatchers("/admin").hasRole("ADMIN")
-                .antMatchers("/products/add", "/products/update", "/products/delete").hasRole("ADMIN")
                 .antMatchers("/user", "/products", "/products/search").hasAnyRole("ADMIN", "USER")
-                .antMatchers("/h2-console/**").hasRole("ADMIN");
-
-        http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
-
-        http.authorizeRequests().and().formLogin()
-                .loginProcessingUrl("/j_spring_security_check")
+                .antMatchers("/products/add", "/products/update", "/products/delete").hasRole("ADMIN")
+                .antMatchers("/h2-console/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
+                .and().formLogin()
                 .defaultSuccessUrl("/user")
                 .failureUrl("/login?error=true")
-                .usernameParameter("username")
-                .passwordParameter("password")
-                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/");
+                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/")
+                .and().exceptionHandling().accessDeniedPage("/403");
 
         // config for Remember Me
         http.authorizeRequests().and() //

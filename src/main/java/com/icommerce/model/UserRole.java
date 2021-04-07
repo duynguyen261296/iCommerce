@@ -29,18 +29,19 @@ public class UserRole {
     @Column(name = "user_role_id", unique = true, nullable = false)
     private Integer userRoleId;
 
-    @Column(name = "username", unique = true, nullable = false, length = 45)
-    private String username;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "username", nullable = false)
+    private User user;
 
-    @Column(name = "role", nullable = false, length = 45)
-    @Enumerated(EnumType.STRING)
-    private RoleUser roleUser;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role", nullable = false)
+    private Role role;
 
     public UserRole() {
     }
 
-    public UserRole(String username, RoleUser roleUser) {
-        this.username = username;
-        this.roleUser = roleUser;
+    public UserRole(User user, Role role) {
+        this.user = user;
+        this.role = role;
     }
 }

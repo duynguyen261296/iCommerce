@@ -6,12 +6,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import com.icommerce.model.enums.RoleUser;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,14 +27,14 @@ public class Role {
     @Column(name = "role_id", unique = true, nullable = false)
     private Integer roleId;
 
-    @Column(name = "role", nullable = false, length = 45)
+    @Column(name = "role", nullable = false, length = 10)
     @Enumerated(EnumType.STRING)
-    private RoleUser role;
+    private RoleUser roleUser;
 
     public Role() {
     }
 
     public Role(RoleUser role) {
-        this.role = role;
+        this.roleUser = role;
     }
 }

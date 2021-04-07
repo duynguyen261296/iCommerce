@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.icommerce.model.Product;
 import com.icommerce.repository.ProductCriteria;
 import com.icommerce.repository.ProductRepository;
-import com.icommerce.repository.UserRoleRepository;
 import com.icommerce.services.ProductService;
 
 /**

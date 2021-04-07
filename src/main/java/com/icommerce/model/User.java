@@ -44,10 +44,6 @@ public class User {
     @Column(name = "email", nullable = false, length = 60)
     private String email;
 
-    @Fetch(FetchMode.SUBSELECT)
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-    private Set<UserRole> userRole = new HashSet<>();
-
     public User() {
     }
 
@@ -56,13 +52,5 @@ public class User {
         this.password = password;
         this.enabled = enabled;
         this.email = email;
-    }
-
-    public User(String username, String password, boolean enabled, String email, Set<UserRole> userRole) {
-        this.username = username;
-        this.password = password;
-        this.enabled = enabled;
-        this.email = email;
-        this.userRole = userRole;
     }
 }

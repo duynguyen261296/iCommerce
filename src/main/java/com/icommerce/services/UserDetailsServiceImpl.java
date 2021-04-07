@@ -12,8 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import com.icommerce.model.User;
-import com.icommerce.model.UserRole;
 import com.icommerce.repository.UserRepository;
+import com.icommerce.repository.UserRoleRepository;
 
 /**
  *
@@ -24,6 +24,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserRoleRepository userRoleRepository;
 
     @Override
     @Transactional
@@ -36,11 +39,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         List<GrantedAuthority> grantList = new ArrayList<>();
-        Set<UserRole> userRoles = user.getUserRole();
+        Set<String> userRoles = userRoleRepository.findRoleByUsername(userName);
         if (!userRoles.isEmpty()) {
             userRoles.forEach(userRole -> {
                 // ROLE_USER, ROLE_ADMIN
-                GrantedAuthority authority = new SimpleGrantedAuthority(userRole.getRoleUser().name());
+                GrantedAuthority authority = new SimpleGrantedAuthority(userRole);
                 grantList.add(authority);
             });
         }
