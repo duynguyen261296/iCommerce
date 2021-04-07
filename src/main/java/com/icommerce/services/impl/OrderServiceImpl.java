@@ -35,7 +35,8 @@ public class OrderServiceImpl implements OrderService {
 
         Product product = productRepository.findByName(orderInfor.getProductName());
         // validate quantity of order and quantity of exist product
-        Validate.isTrue(orderInfor.getQuantity() <= product.getQuantity(), "The number of product in order must not exceed the number of exist product.");
+        Validate.isTrue(orderInfor.getQuantity() <= product.getQuantity(),
+                "The number of product in order must not exceed remaining quantity of product exist product");
         // calculate money have to pay
         order.setSumMoney(product.getPrice() * orderInfor.getQuantity());
         // update quantity of product
@@ -47,12 +48,12 @@ public class OrderServiceImpl implements OrderService {
 
     private void validateOrderInfor(OrderInfor orderInfor) {
         // validate information of user and product to be order
-        Validate.notNull(orderInfor.getFullName());
-        Validate.notNull(orderInfor.getAddress());
-        Validate.notNull(orderInfor.getPhone());
-        Validate.notNull(orderInfor.getEmail());
-        Validate.notNull(orderInfor.getProductName());
-        Validate.notNull(orderInfor.getQuantity());
+        Validate.notNull(orderInfor.getFullName(), "Full name of user must not be null");
+        Validate.notNull(orderInfor.getAddress(), "Address of user must not be null");
+        Validate.notNull(orderInfor.getPhone(), "Phone of user must not be null");
+        Validate.notNull(orderInfor.getEmail(), "Email of user must not be null");
+        Validate.notNull(orderInfor.getProductName(), "Name of product must not be null");
+        Validate.notNull(orderInfor.getQuantity(), "Quantity must not be null");
         Validate.isTrue(orderInfor.getQuantity() > 0, "The number of product in order must be greater than 0");
     }
 }

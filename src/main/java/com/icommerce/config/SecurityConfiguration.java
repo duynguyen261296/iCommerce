@@ -40,11 +40,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and().formLogin()
-                .defaultSuccessUrl("/user")
+                .defaultSuccessUrl("/user",true)
                 .failureUrl("/login?error=true")
                 .usernameParameter("username")
                 .passwordParameter("password")
-                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/");
+                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/")
+                .deleteCookies("JSESSIONID");
 
         // config for Remember Me
         http.authorizeRequests().and() //
