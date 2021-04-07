@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.icommerce.model.Product;
-import com.icommerce.repository.ProductCriteria;
+import com.icommerce.repository.criteria.ProductCriteria;
 import com.icommerce.services.ProductService;
 
 /**

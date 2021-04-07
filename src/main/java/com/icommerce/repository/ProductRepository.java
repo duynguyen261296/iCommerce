@@ -10,4 +10,5 @@ import com.icommerce.model.Product;
  */
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer>, ProductRepositoryCustom {
+    Product findByName(String name);
 }

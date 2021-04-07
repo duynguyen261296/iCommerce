@@ -9,9 +9,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import org.springframework.beans.factory.annotation.Autowired;
 import com.icommerce.model.Product;
-import com.icommerce.repository.ProductCriteria;
+import com.icommerce.repository.criteria.ProductCriteria;
 import com.icommerce.repository.ProductRepositoryCustom;
 
 /**
@@ -28,6 +27,13 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
         CriteriaQuery<Product> query = cb.createQuery(Product.class);
         Root<Product> productRoot = query.from(Product.class);
         List<Predicate> predicates = new ArrayList<>();
+        buildConditionSearchCriteria(productCriteria, cb, productRoot, predicates);
+        query.select(productRoot)
+                .where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+        return entityManager.createQuery(query).getResultList();
+    }
+
+    private void buildConditionSearchCriteria(ProductCriteria productCriteria, CriteriaBuilder cb, Root<Product> productRoot, List<Predicate> predicates) {
         if (productCriteria.getName() != null) {
             Path<String> namePath = productRoot.get("name");
             predicates.add(cb.like(namePath, productCriteria.getName()));
@@ -44,8 +50,5 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
             Path<Double> maxPricePath = productRoot.get("price");
             predicates.add(cb.lessThanOrEqualTo(maxPricePath, productCriteria.getMaxPrice()));
         }
-        query.select(productRoot)
-                .where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
-        return entityManager.createQuery(query).getResultList();
     }
 }

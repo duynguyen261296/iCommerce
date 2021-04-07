@@ -35,20 +35,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/", "/login", "/logout").permitAll()
                 .antMatchers("/admin").hasRole("ADMIN")
-                .antMatchers("/user", "/products", "/products/search").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/user", "/products", "/products/search", "/orders", "/orders/search").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/products/add", "/products/update", "/products/delete").hasRole("ADMIN")
                 .antMatchers("/h2-console/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and().formLogin()
                 .defaultSuccessUrl("/user")
                 .failureUrl("/login?error=true")
-                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/")
-                .and().exceptionHandling().accessDeniedPage("/403");
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/");
 
         // config for Remember Me
         http.authorizeRequests().and() //
                 .rememberMe().tokenRepository(this.persistentTokenRepository())
-                .tokenValiditySeconds(1 * 24 * 60 * 60); // 24h
+                .tokenValiditySeconds(24 * 60 * 60); // 24h
     }
 
     @Bean

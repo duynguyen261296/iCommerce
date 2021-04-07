@@ -1,9 +1,9 @@
 package com.icommerce.services;
 
+import java.sql.SQLException;
 import java.util.List;
-import org.springframework.stereotype.Service;
 import com.icommerce.model.Product;
-import com.icommerce.repository.ProductCriteria;
+import com.icommerce.repository.criteria.ProductCriteria;
 
 /**
  *

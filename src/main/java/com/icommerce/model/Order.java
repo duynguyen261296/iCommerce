@@ -38,21 +38,23 @@ public class Order {
     private String email;
 
     @Column(name = "product_name", nullable = false)
-    private Integer productName;
+    private String productName;
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
-    @Column(name = "sum", nullable = false)
+    @Column(name = "sum_money", nullable = false)
     private Double sumMoney;
 
     public Order() {
     }
 
-    public Order(String fullName, String phone, String address, String email) {
+    public Order(String fullName, String phone, String address, String email, String productName, Integer quantity) {
         this.fullName = fullName;
         this.phone = phone;
         this.address = address;
         this.email = email;
+        this.productName = productName;
+        this.quantity = quantity;
     }
 }

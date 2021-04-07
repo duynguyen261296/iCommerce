@@ -1,4 +1,4 @@
-package com.icommerce.repository;
+package com.icommerce.repository.criteria;
 
 import lombok.Builder;
 import lombok.Getter;

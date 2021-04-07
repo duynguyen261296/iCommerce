@@ -62,7 +62,7 @@ CREATE TABLE orders
     email        varchar(45) not null,
     product_name varchar(45) not null,
     quantity     int         not null,
-    sum          double      not null,
+    sum_money    double      not null,
 
     constraint PK_ORDERS primary key (order_id)
 );

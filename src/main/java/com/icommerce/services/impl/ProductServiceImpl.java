@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.icommerce.model.Product;
-import com.icommerce.repository.ProductCriteria;
 import com.icommerce.repository.ProductRepository;
+import com.icommerce.repository.criteria.ProductCriteria;
 import com.icommerce.services.ProductService;
 
 /**
@@ -22,7 +22,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getAllProducts() {
-        return productRepository.findAll();
+        return productRepository.findAll().stream()
+                .filter(product -> product.getQuantity() > 0)
+                .collect(Collectors.toList());
     }
 
     @Override
