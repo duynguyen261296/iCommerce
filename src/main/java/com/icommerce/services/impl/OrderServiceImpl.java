@@ -1,5 +1,7 @@
 package com.icommerce.services.impl;
 
+import static com.icommerce.services.error.OrderServiceErrorMessage.*;
+
 import java.util.List;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +37,7 @@ public class OrderServiceImpl implements OrderService {
 
         Product product = productRepository.findByName(orderInfor.getProductName());
         // validate quantity of order and quantity of exist product
-        Validate.isTrue(orderInfor.getQuantity() <= product.getQuantity(),
-                "The number of product in order must not exceed remaining quantity of product exist product");
+        Validate.isTrue(orderInfor.getQuantity() <= product.getQuantity(), NUMBER_PRODUCT_IN_ORDER_NOT_VALID);
         // calculate money have to pay
         order.setSumMoney(product.getPrice() * orderInfor.getQuantity());
         // update quantity of product
@@ -48,12 +49,12 @@ public class OrderServiceImpl implements OrderService {
 
     private void validateOrderInfor(OrderInfor orderInfor) {
         // validate information of user and product to be order
-        Validate.notNull(orderInfor.getFullName(), "Full name of user must not be null");
-        Validate.notNull(orderInfor.getAddress(), "Address of user must not be null");
-        Validate.notNull(orderInfor.getPhone(), "Phone of user must not be null");
-        Validate.notNull(orderInfor.getEmail(), "Email of user must not be null");
-        Validate.notNull(orderInfor.getProductName(), "Name of product must not be null");
-        Validate.notNull(orderInfor.getQuantity(), "Quantity must not be null");
-        Validate.isTrue(orderInfor.getQuantity() > 0, "The number of product in order must be greater than 0");
+        Validate.notNull(orderInfor.getFullName(), MISSING_FULL_NAME_OF_USER);
+        Validate.notNull(orderInfor.getAddress(), MISSING_ADDRESS_OF_USER);
+        Validate.notNull(orderInfor.getPhone(), MISSING_PHONE_OF_USER);
+        Validate.notNull(orderInfor.getEmail(), MISSING_EMAIL_OF_USER);
+        Validate.notNull(orderInfor.getProductName(), MISSING_NAME_OF_PRODUCT_IN_ORDER);
+        Validate.notNull(orderInfor.getQuantity(), MISSING_QUANTITY_OF_PRODUCT_IN_ORDER);
+        Validate.isTrue(orderInfor.getQuantity() > 0, NUMBER_PRODUCT_IN_ORDER_MUST_GREATER_THAN_ZERO);
     }
 }

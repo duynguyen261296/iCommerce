@@ -25,6 +25,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 public class SecurityTest {
+    public static final String ROLE_ADMIN = "ADMIN";
+    public static final String ADMIN_1 = "admin_1";
 
     @Autowired
     private MockMvc mockMvc;
@@ -59,6 +61,20 @@ public class SecurityTest {
     @WithMockUser
     public void accessSecuredResourceAuthenticatedThenOk() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/user"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser
+    public void accessAdminResourceWithRoleUser() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/admin"))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    @WithMockUser(username = ADMIN_1, roles = {ROLE_ADMIN})
+    public void accessAdminResourceWithRoleAdmin() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/admin"))
                 .andExpect(status().isOk());
     }
 }

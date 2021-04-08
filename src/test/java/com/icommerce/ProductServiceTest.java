@@ -1,12 +1,14 @@
 package com.icommerce.model;
 
 import java.util.List;
+import javax.transaction.Transactional;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import com.icommerce.repository.ProductRepository;
 import com.icommerce.repository.criteria.ProductCriteria;
 import com.icommerce.services.ProductService;
 
@@ -17,10 +19,11 @@ import com.icommerce.services.ProductService;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Transactional
 public class ProductServiceTest {
 
     @Autowired
-    private DataTestFactory dataTestFactory;
+    private ProductRepository productRepository;
 
     @Autowired
     private ProductService productService;
@@ -34,31 +37,31 @@ public class ProductServiceTest {
     @Test
     public void testAddNewProduct() {
         Product product = productService.addNewProduct(new Product("POCO X3 Pro", 300.00, "Xiaomi", 15));
-        Assert.assertNotNull(dataTestFactory.getProductRepository().findByName(product.getName()));
+        Assert.assertNotNull(productRepository.findByName(product.getName()));
     }
 
     @Test
     public void testUpdateProduct() {
-        Product product = dataTestFactory.getProductRepository().findByName("Samsung Galaxy Note 20");
+        Product product = productRepository.findByName("Samsung Galaxy Note 20");
         product.setPrice(1500.00);
         product.setQuantity(20);
         productService.updateProduct(product);
 
-        Product productAfterUpdate = dataTestFactory.getProductRepository().findByName("Samsung Galaxy Note 20");
+        Product productAfterUpdate = productRepository.findByName("Samsung Galaxy Note 20");
         Assert.assertEquals(Double.valueOf(1500), productAfterUpdate.getPrice());
         Assert.assertEquals(Integer.valueOf(20), productAfterUpdate.getQuantity());
     }
 
     @Test
     public void testDeleteProduct() {
-        Product product = dataTestFactory.getProductRepository().findByName("Xiaomi Mi 11");
+        Product product = productRepository.findByName("Xiaomi Mi 11");
         productService.deleteProduct(product.getProductId());
-        Assert.assertNull(dataTestFactory.getProductRepository().findByName("Xiaomi Mi 11"));
+        Assert.assertNull(productRepository.findByName("Xiaomi Mi 11"));
     }
 
     @Test
     public void testSortProductByPrice() {
-        List<Product> products = dataTestFactory.getProductRepository().findAll();
+        List<Product> products = productRepository.findAll();
 
         List<Product> sortedProductsIncrease = productService.sortProductByPrice(products, true);
         Assert.assertEquals(Double.valueOf(200), sortedProductsIncrease.get(0).getPrice());

@@ -1,5 +1,7 @@
 package com.icommerce.model;
 
+import static com.icommerce.model.SecurityTest.ADMIN_1;
+import static com.icommerce.model.SecurityTest.ROLE_ADMIN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -7,8 +9,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.json.JSONArray;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -21,21 +25,26 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.icommerce.repository.OrderRepository;
+import com.icommerce.repository.ProductRepository;
 import com.icommerce.repository.criteria.OrderInfor;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Transactional
 public class ControllerTests {
-    public static final String ROLE_ADMIN = "ADMIN";
-    public static final String ADMIN_1 = "admin_1";
 
     @Autowired
     private WebApplicationContext context;
 
     @Autowired
-    private DataTestFactory dataTestFactory;
+    private ProductRepository productRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
     private MockMvc mvc;
 
@@ -63,7 +72,8 @@ public class ControllerTests {
     @Test
     @WithMockUser(username = ADMIN_1, roles = {ROLE_ADMIN})
     public void testAddNewProduct() throws Exception {
-        Product product = dataTestFactory.createDataProduct("Xiaomi Mi 10T Pro", "Xiaomi", 500.00, 12);
+        Product product = DataTestFactory.createDataProduct("Xiaomi Mi 10T Pro",
+                "Xiaomi", 500.00, 12, productRepository);
         MvcResult mvcResult = mvc.perform(post("/products/add")
                 .content(asJsonString(product))
                 .contentType(MediaType.APPLICATION_JSON))
@@ -76,7 +86,8 @@ public class ControllerTests {
     @Test
     @WithMockUser(username = ADMIN_1, roles = {ROLE_ADMIN})
     public void testUpdateProduct() throws Exception {
-        Product product = dataTestFactory.createDataProduct("Xiaomi Mi 10T Pro", "Xiaomi", 800.00, 50);
+        Product product = DataTestFactory.createDataProduct("Xiaomi Mi 10T Pro",
+                "Xiaomi", 800.00, 50, productRepository);
         MvcResult mvcResult = mvc.perform(put("/products/update")
                 .content(asJsonString(product))
                 .contentType(MediaType.APPLICATION_JSON))
@@ -89,17 +100,18 @@ public class ControllerTests {
     @Test
     @WithMockUser(username = ADMIN_1, roles = {ROLE_ADMIN})
     public void testDeleteProduct() throws Exception {
-        Product product = dataTestFactory.createDataProduct("Xiaomi Mi 9T Pro", "Xiaomi", 500.00, 12);
+        Product product = DataTestFactory.createDataProduct("Xiaomi Mi 9T Pro",
+                "Xiaomi", 500.00, 12, productRepository);
         mvc.perform(delete("/products/delete")
                 .param("id", product.getProductId().toString()))
                 .andExpect(status().isOk());
-        Assert.assertNull(dataTestFactory.getProductRepository().findByName("Xiaomi Mi 9T Pro"));
+        Assert.assertNull(productRepository.findByName("Xiaomi Mi 9T Pro"));
     }
 
     @Test
     @WithMockUser
     public void testAddNewOrder() throws Exception {
-        OrderInfor orderInfor = dataTestFactory.createOrderInformation("Nguyen Quoc Duy", "0123456789", "TPHCM"
+        OrderInfor orderInfor = DataTestFactory.createOrderInformation("Nguyen Quoc Duy", "0123456789", "TPHCM"
                 , "user_1@gmail.com", "Iphone12", 1);
         MvcResult mvcResult = mvc.perform(post("/orders")
                 .content(asJsonString(orderInfor))
@@ -107,22 +119,22 @@ public class ControllerTests {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8_VALUE))
                 .andReturn();
-        JSONAssert.assertEquals("{\"orderId\":1,\"fullName\":\"Nguyen Quoc Duy\",\"phone\":\"0123456789\",\"address\":\"TPHCM\",\"email\":\"user_1@gmail.com\",\"productName\":\"Iphone12\",\"quantity\":1,\"sumMoney\":1500.0}", mvcResult.getResponse().getContentAsString(), false);
+        JSONAssert.assertEquals("{\"fullName\":\"Nguyen Quoc Duy\",\"phone\":\"0123456789\",\"address\":\"TPHCM\",\"email\":\"user_1@gmail.com\",\"productName\":\"Iphone12\",\"quantity\":1,\"sumMoney\":1800.0}", mvcResult.getResponse().getContentAsString(), false);
     }
 
     @Test
     @WithMockUser
     public void testGetOrderByEmail() throws Exception {
-        OrderInfor orderInfor = dataTestFactory.createOrderInformation("Nguyen Quoc Duy", "0123456789", "TPHCM"
+        OrderInfor orderInfor = DataTestFactory.createOrderInformation("Nguyen Quoc Duy", "0123456789", "TPHCM"
                 , "user_1@gmail.com", "Iphone12", 1);
-        dataTestFactory.createOrder(orderInfor, 1500.00);
+        DataTestFactory.createOrder(orderInfor, productRepository, orderRepository);
         MvcResult mvcResult = mvc.perform(get("/orders/search")
                 .param("email", orderInfor.getEmail()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8_VALUE))
                 .andReturn();
         JSONArray array = new JSONArray(mvcResult.getResponse().getContentAsString());
-        JSONAssert.assertEquals("{\"orderId\":1,\"fullName\":\"Nguyen Quoc Duy\",\"phone\":\"0123456789\",\"address\":\"TPHCM\",\"email\":\"user_1@gmail.com\",\"productName\":\"Iphone12\",\"quantity\":1,\"sumMoney\":1500.0}", array.get(0).toString(), false);
+        JSONAssert.assertEquals("{\"orderId\":1,\"fullName\":\"Nguyen Quoc Duy\",\"phone\":\"0123456789\",\"address\":\"TPHCM\",\"email\":\"user_1@gmail.com\",\"productName\":\"Iphone12\",\"quantity\":1,\"sumMoney\":1800.0}", array.get(0).toString(), false);
     }
 
     private static String asJsonString(final Object obj) {
