@@ -1,15 +1,11 @@
-package com.icommerce.model;
+package com.icommerce;
 
-import static com.icommerce.services.error.OrderServiceErrorMessage.NUMBER_PRODUCT_IN_ORDER_NOT_VALID;
-
-import javax.annotation.PostConstruct;
-import org.apache.commons.lang3.Validate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import com.icommerce.model.Order;
+import com.icommerce.model.Product;
 import com.icommerce.repository.OrderRepository;
 import com.icommerce.repository.ProductRepository;
 import com.icommerce.repository.criteria.OrderInfor;
-import lombok.Getter;
 
 /**
  *

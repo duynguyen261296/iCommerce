@@ -1,7 +1,7 @@
-package com.icommerce.model;
+package com.icommerce;
 
-import static com.icommerce.model.SecurityTest.ADMIN_1;
-import static com.icommerce.model.SecurityTest.ROLE_ADMIN;
+import static com.icommerce.SecurityTest.ADMIN_1;
+import static com.icommerce.SecurityTest.ROLE_ADMIN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -9,10 +9,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.json.JSONArray;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -28,6 +26,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.icommerce.model.Product;
 import com.icommerce.repository.OrderRepository;
 import com.icommerce.repository.ProductRepository;
 import com.icommerce.repository.criteria.OrderInfor;

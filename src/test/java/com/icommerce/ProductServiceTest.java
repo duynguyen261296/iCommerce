@@ -1,4 +1,4 @@
-package com.icommerce.model;
+package com.icommerce;
 
 import java.util.List;
 import javax.transaction.Transactional;
@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import com.icommerce.model.Product;
 import com.icommerce.repository.ProductRepository;
 import com.icommerce.repository.criteria.ProductCriteria;
 import com.icommerce.services.ProductService;
