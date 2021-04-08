@@ -29,7 +29,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
         List<Predicate> predicates = new ArrayList<>();
         buildConditionSearchCriteria(productCriteria, cb, productRoot, predicates);
         query.select(productRoot)
-                .where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+                .where(cb.and(predicates.toArray(new Predicate[0])));
         return entityManager.createQuery(query).getResultList();
     }
 
@@ -46,7 +46,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
             Path<Double> minPricePath = productRoot.get("price");
             predicates.add(cb.greaterThanOrEqualTo(minPricePath, productCriteria.getMinPrice()));
         }
-        if (productCriteria.getName() != null) {
+        if (productCriteria.getMaxPrice() != null) {
             Path<Double> maxPricePath = productRoot.get("price");
             predicates.add(cb.lessThanOrEqualTo(maxPricePath, productCriteria.getMaxPrice()));
         }

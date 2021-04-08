@@ -88,7 +88,7 @@ VALUES ('user_1', 'ROLE_USER'),
 INSERT INTO products (name, price, brand, quantity)
 VALUES ('IphoneX', '1000', 'Apple', '10'),
        ('Iphone11', '1200', 'Apple', '15'),
-       ('Iphone12', '1500', 'Apple', '20'),
+       ('Iphone12', '1800', 'Apple', '20'),
        ('Samsung Galaxy Note 10', '1000', 'Samsung', '10'),
        ('Samsung Galaxy Note 20', '1200', 'Samsung', '15'),
        ('Samsung Galaxy Note 21', '1500', 'Samsung', '18'),
