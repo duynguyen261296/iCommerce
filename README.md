@@ -46,7 +46,7 @@ Install the dependencies and start the server.
 ## How to use
 
 ### 1) Login/Logout
-When you already started the spring boot server go to [localhost:8080](http://localhost:8080) to login this application. I created 3 User in database to use, I'm not yet implement API to create new User in this version may be implement later, so please use one of Users in below.
+When you already started the spring boot server go to **[localhost:8080](localhost:8080)** to login this application. I created 3 User in database to use, I'm not yet implement API to create new User in this version may be implement later, so please use one of Users in below.
 ```sh
 - The information of user following:
 "user_1" - "password1" - "ROLE_USER"
@@ -55,30 +55,28 @@ When you already started the spring boot server go to [localhost:8080](http://lo
 ```
 *Note: If you login with role user and try to access some APIs of user with role admin you will get 403 Forbidden Error.
 ### 2) Use APIs for PRODUCT
-#### - When you login with role user, you just only can use API with mothod "Get" for product, the APIs following:
-- [localhost:8080/products](https://localhost:8080/products) : use to get all products
+#### - When you login with role user, you just only can use API with method "Get" for product, the APIs following:
+- **[localhost:8080/products](localhost:8080/products)** : use to get all products
 
-- [localhost:8080/products/sort?increase=true](https://localhost:8080/products/sort?increase=true) : use to sort the products base on price, this API has one param if param "increase" is true the products will be arrange with price ascending and opposite.
+- **[localhost:8080/products/sort?increase=true](localhost:8080/products/sort?increase=true)** : use to sort the products base on price, this API has one param if param "increase" is true the products will be arrange with price ascending and opposite.
 
-- [localhost:8080/products/search?params=?](https://localhost:8080/products/search): use to search products with criteria, we have 4 param [name], [brand], [minPrice], [maxPrice] to build criteria. With [name] the API can filer a product has same name with param. With [brand] the API can filter all products has same brand. With[minPrice] the API can filter all products with price greater than or equal min price and with[maxPrice] filter all products with price less than or equal max price. For example: [localhost:8080/products/search?name=Iphone12](https://localhost:8080/products/search?name=Iphone12) to find detail aobut Iphone 12 or use [localhost:8080/products/search?brand=Samsung&minPrice=1200](https://localhost:8080/products/search?brand=Samsung&minPrice=1200) to find all smartphone of Samsung brand with minimum price is 1200.
+- **[localhost:8080/products/search?params=?](localhost:8080/products/search)**: use to search products with criteria, we have 4 param [name], [brand], [minPrice], [maxPrice] to build criteria. With [name] the API can filer a product has same name with param. With [brand] the API can filter all products has same brand. With[minPrice] the API can filter all products with price greater than or equal min price and with[maxPrice] filter all products with price less than or equal max price. For example: **[localhost:8080/products/search?name=Iphone12](localhost:8080/products/search?name=Iphone12)** to find detail aobut Iphone 12 or use **[localhost:8080/products/search?brand=Samsung&minPrice=1200](localhost:8080/products/search?brand=Samsung&minPrice=1200)** to find all smartphone of Samsung brand with minimum price is 1200.
 
-#### - When you login with role admin, you can use API for all mothod for product, you can use [Postman](https://www.postman.com/downloads/) or other tool to test this APIs, the APIs following:
-- [localhost:8080/products/add](https://localhost:8080/products/add) : use to add new a product
+#### - When you login with role admin, you can use API for all method for product, you can use [Postman](https://www.postman.com/downloads/) or other tool to test this APIs, the APIs following:
+- **[localhost:8080/products/add](localhost:8080/products/add)** : use to add new a product
 
-- [localhost:8080/products/update](https://localhost:8080/products/update) : use to update a product
+- **[localhost:8080/products/update](localhost:8080/products/update)** : use to update a product
 
-- [localhost:8080/products/delete](https://localhost:8080/products/delete) : use to delete a product
+- **[localhost:8080/products/delete](localhost:8080/products/delete)** : use to delete a product
 
 ### 3) Use APIs for ORDER
 #### - User can order product that he/she want to buy, the APIs following:
-- [localhost:8080/orders](https://localhost:8080/orders) : use to add new a order user want to buy, as a POST method so you can you [Postman](https://www.postman.com/downloads/) to test this API, when user order successfully, this API will calculate sum money have to pay and update the remaining quantity of Product.
+- **[localhost:8080/orders](localhost:8080/orders)** : use to add new a order user want to buy, as a POST method so you can you [Postman](https://www.postman.com/downloads/) to test this API, when user order successfully, this API will calculate sum money have to pay and update the remaining quantity of Product.
 
-- [localhost:8080/orders/search?email=?](https://localhost:8080/orders/search?email=?) : use to search history of orders of user by  user email.
+- **[localhost:8080/orders/search?email=?](localhost:8080/orders/search?email=?)** : use to search history of orders of user by  user email.
 
 ### 4) Use Postman test APIs
 #### - If you are not yet know about Postman, please follow this [link](https://www.youtube.com/watch?v=t5n07Ybz7yI) to setup and use this tool for testing.
-
-
 
 ## Sources
 ### The technology websites to learn and build this application following:
